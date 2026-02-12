@@ -1,0 +1,169 @@
+set number
+
+set wrap
+
+colorscheme evening
+
+set gfn=Courier_New:h12:cANSI:qDRAFT
+"set encoding=utf-8
+"e ++enc=cp866
+set keymap=russian-jcukenwin
+
+set tabstop=4
+set expandtab
+set shiftwidth=4
+set autoindent
+set smartindent
+
+set hlsearch
+
+syntax on 
+
+" Display a vertical line at column 80
+set colorcolumn=80 
+
+""Uncomment paste for termux
+
+"au TextYankPost * call system('termux-clipboard-set &', @")
+"function Paste(p)
+"    let sysclip=system('termux-clipboard-get')
+"    if sysclip != @"
+"        let @"=sysclip
+"    endif
+"    return a:p
+"endfunction
+"noremap <expr> p Paste('p')
+"noremap <expr> P Paste('P')
+
+""Uncomment for termux. Maps for MessageEase cyrillic keboard layout
+"source /data/data/com.termux/files/home/storage/downloads/vim_maps.txt
+
+""Uncomment for termux. Remap to navigate in history by one hand 
+"nnoremap mj <C-o>
+"nnoremap mk <C-i>
+"
+
+"cscope settings
+"don't forget to copy cscope_maps.vim (https://cscope.sourceforge.net/cscope_maps.vim) to ~/.vim/plugin directory
+
+let mapleader=" "
+set cscopequickfix=s-,c-,d-,i-,t-,e-
+"nnoremap <leader>s yiw:cs find s <C-R>=expand("<cword>")<CR><CR>:ccl<CR>:bd<CR>:cwindow<CR>/<C-R>0<CR>
+nnoremap <leader>j yiw:cs find s <C-R>=expand("<cword>")<CR><CR>:exec "normal \<C-o>"<CR>:ccl<CR>:cwindow<CR>/<<[0-9a-z_]*>><CR>
+nnoremap <leader>a yiw:cs find a <C-R>=expand("<cword>")<CR><CR>:exec "normal \<C-o>"<CR>:ccl<CR>:cwindow<CR>/<C-R>0<CR>
+nnoremap <leader>c yiw:cs find c <C-R>=expand("<cword>")<CR><CR>:exec "normal \<C-o>"<CR>:ccl<CR>:cwindow<CR>/<C-R>0<CR>
+"nnoremap <leader>d yiw:cs find d <C-R>=expand("<cword>")<CR><CR>:exec "normal \<C-o>"<CR>:ccl<CR>:cwindow<CR>/<C-R>0<CR>
+nnoremap <leader>d yiw:cs find s <C-R>=expand("<cword>")<CR><CR>:exec "normal \<C-o>"<CR>:ccl<CR>:cwindow<CR>/<<<C-R>0>><CR>
+nnoremap <leader>e yiw:cs find e <C-R>=expand("<cword>")<CR><CR>:exec "normal \<C-o>"<CR>:ccl<CR>:cwindow<CR>/<C-R>0<CR>
+nnoremap <leader>f yiw:cs find f <C-R>=expand("<cword>")<CR><CR>:exec "normal \<C-o>"<CR>:ccl<CR>:cwindow<CR>/<C-R>0<CR>
+nnoremap <leader>g yiw:cs find g <C-R>=expand("<cword>")<CR><CR>:exec "normal \<C-o>"<CR>:ccl<CR>:cwindow<CR>/<C-R>0<CR>
+nnoremap mm <C-w><C-w>
+
+"open quickfix result in new tab
+nnoremap mn :tab split<CR>:.cc<CR>
+
+"one hand go to prev/next location
+nnoremap mo <C-o>
+nnoremap mi <C-i>
+
+""example of adding cscope database
+"cscope add  /home/brother/Downloads/common/xilinx/kintex7/stlv_nic/SW/XilinxAR65444/cscope.out
+
+"Vim tabs color style and settings
+hi TabLineFill ctermfg=LightGreen ctermbg=DarkGreen
+hi TabLine ctermfg=Black ctermbg=DarkGreen
+hi TabLineSel ctermfg=Black ctermbg=Red
+set tabpagemax=50
+map H :tabprev<CR>
+map L :tabnext<CR>
+noremap tj :tabprev<CR>
+noremap tk :tabnext<CR>
+noremap th :tabfirst<CR>
+noremap tl :tablast<CR>
+
+"autocompletion list (n) color style
+highlight Pmenu ctermfg=grey ctermbg=black
+highlight PmenuSel ctermfg=black ctermbg=green
+
+"search highlight color style
+hi Search cterm=NONE ctermfg=black ctermbg=blue
+
+"underline current line
+set cursorline
+
+nnoremap j gj
+nnoremap k gk
+nnoremap t j 
+nnoremap f k 
+nnoremap r l 
+
+
+highlight Cursor guifg=white guibg=black
+highlight iCursor guifg=white guibg=steelblue
+set guicursor=n-v-c:block-Cursor
+set guicursor+=i:ver100-iCursor
+set guicursor+=n-v-c:blinkon0
+set guicursor+=i:blinkwait10
+
+
+let mapleader=" "
+set cscopequickfix=s-,c-,d-,i-,t-,e-
+nnoremap <leader>s yiw:cs find s <C-R>=expand("<cword>")<CR><CR>:ccl<CR>:bd<CR>:cwindow<CR>/<C-R>0<CR>
+
+"set hidden for vim-codesearch plugin
+set hidden
+
+"Copy all matshes. Test "v, select text, Ctrl-C, :\%Vpattern, enter, :let @a='',
+":CopyMatches a, paste
+function! CopyMatches(reg)
+  let hits = []
+  %s//\=len(add(hits, submatch(0))) ? submatch(0) : ''/gne
+  let reg = empty(a:reg) ? '+' : a:reg
+  execute 'let @'.reg.' = join(hits, "\n") . "\n"'
+endfunction
+command! -register CopyMatches call CopyMatches(<q-reg>)
+
+"more ergonomic key to switch language in insert mode
+imap <C-k> <C-^>
+
+"" vim-easy-align plugin settings
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
+
+"allow backspacing over everything in insert mode. Backcpace did not work
+"after new vim (built from source) was installed
+set backspace=indent,eol,start
+
+"" configure matching braces coloring
+hi MatchParen cterm=bold ctermbg=none ctermfg=green
+
+"" Горячие клавиши для вставки названий рисунков и таблиц для markdown
+inoremap  \t <c-r>=strftime('CapTable%y%m%d%H%M%S')<cr>
+inoremap  \f <c-r>=strftime('CapFigure%y%m%d%H%M%S')<cr>
+
+"command! Cfig put=strftime('Figure%y%m%d%H%M%S')
+"map <leader>d :put=strftime('CapFigure%y%m%d%H%M%S')<cr>
+"map <leader>st :put=strftime('Step%y%m%d%H%M%S')<cr>
+
+function! Crc()
+let value=strftime("%y%m%d%H%M%S")
+"echo value
+let a = system("echo -n " . value . " | cksum | cut -d' ' -f1 | tr -d '\n' ")
+let code = printf("%x", str2nr(a,10))
+return code 
+endfunction
+
+inoremap <leader>st <c-r>='//@step '<cr>
+inoremap <leader>sn <c-r>='//@step_' . Crc() . ' '<cr>
+
+"При нажатии F1 в буфер обмена скопировать имя файла и строку для ссылки в формате Markdown.
+"Вставить содержимое буфера обмена можно с помощью ctrl-insert
+nnoremap <F1> :let @+ = '[Открыть в файле]' . '(' . expand('%') . '#L' . line('.') . ')'<CR><Esc>
+
+"использовать синтаксис для файлов .asm
+augroup twig_ft
+  au!
+  autocmd BufNewFile,BufRead *.asm set syntax=tasm
+augroup END

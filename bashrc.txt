@@ -1,0 +1,22 @@
+# gen cscope DB and connect it in vim 
+function addCscopeDb (){
+echo "cscope add `pwd`/cscope.out" >> ~/.vimrc
+}
+function genCscope (){
+ echo `pwd`
+ find `pwd`/ -type f -iname "*.c" > cscope.files
+find `pwd`/ -type f -iname "*.h" >> cscope.files
+find `pwd`/ -type f -iname "*.asm" >> cscope.files
+find `pwd`/ -type f -iname "*.inc" >> cscope.files
+find `pwd`/ -type f -iname "*.cpp" >> cscope.files
+cscope -b -q -k
+addCscopeDb
+}
+alias cscopegen=genCscope
+
+#PS1=$PS1'\[\e]2;\W\a\]' # set terminal title to current working directory
+
+parse_git_branch() {
+   git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+}
+PS1="\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[33m\]\n\$(parse_git_branch)\[\033[00m\]$" 
