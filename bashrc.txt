@@ -1,7 +1,10 @@
 # gen cscope DB and connect it in vim 
 function addCscopeDb (){
-echo "cscope add `pwd`/cscope.out" >> ~/.vimrc
+STRING_TO_ADD="cscope add `pwd`/cscope.out"
+FILE=~/.vimrc
+grep -qF "$STRING_TO_ADD" "$FILE" || echo "$STRING_TO_ADD" >> "$FILE" 
 }
+
 function genCscope (){
  echo `pwd`
  find `pwd`/ -type f -iname "*.c" > cscope.files
