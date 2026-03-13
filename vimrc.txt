@@ -171,3 +171,6 @@ augroup END
 
 "open file path from compile log in new tab
 nnoremap m, :let parts = split(getline('.'),":")<CR>:execute "tabe" "+". parts[1] parts[0]<CR>
+
+"remove function parameter
+nnoremap mi /(<CR>/,<CR>d/,<CR>d/,<CR>:w<CR>
